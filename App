@@ -1,0 +1,83 @@
+class User:
+    def __init__(self, name, address, email, phone):
+        self.name = name
+        self.address = address
+        self.email = email
+        self.phone = phone
+
+class Restaurant:
+    def __init__(self, name, cuisine):
+        self.name = name
+        self.cuisine = cuisine
+
+class MenuItem:
+    def __init__(self, name, description, price):
+        self.name = name
+        self.description = description
+        self.price = price
+
+class Order:
+    def __init__(self, user, restaurant):
+        self.user = user
+        self.restaurant = restaurant
+        self.items = []
+
+    def add_item(self, item, quantity=1):
+        self.items.append({'item': item, 'quantity': quantity})
+
+    def calculate_total(self):
+        total = 0
+        for order_item in self.items:
+            total += order_item['item'].price * order_item['quantity']
+        return total
+
+class DeliveryApp:
+    def __init__(self):
+        self.users = []
+        self.restaurants = []
+        self.orders = []
+
+    def register_user(self, name, address, email, phone):
+        user = User(name, address, email, phone)
+        self.users.append(user)
+        return user
+
+    def register_restaurant(self, name, cuisine):
+        restaurant = Restaurant(name, cuisine)
+        self.restaurants.append(restaurant)
+        return restaurant
+
+    def place_order(self, user, restaurant, items):
+        order = Order(user, restaurant)
+        for item, quantity in items.items():
+            order.add_item(item, quantity)
+        self.orders.append(order)
+        return order
+
+# Example usage:
+
+# Create a delivery app instance
+delivery_app = DeliveryApp()
+
+# Register users
+user1 = delivery_app.register_user("John Doe", "123 Main St", "john@example.com", "123-456-7890")
+user2 = delivery_app.register_user("Jane Smith", "456 Elm St", "jane@example.com", "987-654-3210")
+
+# Register restaurants
+restaurant1 = delivery_app.register_restaurant("Pizza Palace", "Italian")
+restaurant2 = delivery_app.register_restaurant("Burger Barn", "American")
+
+# Define menu items
+pizza = MenuItem("Margherita Pizza", "Classic tomato and mozzarella pizza", 10.99)
+burger = MenuItem("Cheeseburger", "Juicy beef patty with cheese", 8.99)
+
+# Place orders
+order1 = delivery_app.place_order(user1, restaurant1, {pizza: 2})
+order2 = delivery_app.place_order(user2, restaurant2, {burger: 1})
+
+# Calculate total for orders
+total_order1 = order1.calculate_total()
+total_order2 = order2.calculate_total()
+
+print("Order total for user 1:", total_order1)
+print("Order total for user 2:", total_order2)
